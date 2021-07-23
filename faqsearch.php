@@ -6,22 +6,23 @@ function faq_search() {
 
 
 <!-- Search field -->
-<input type="text" id="inputfaq"></input>
-<button type="submit" onclick="getInputValue()">Search</button>
 
-<script>
-      function getInputValue() {
-        // Selecting the input element and get its value 
-        var inputVal = document.getElementById("inputfaq").value;
+<input id="keywords"></input>
 
-        //if input string matches to page contents
-        if ((document.documentElement.textContent || document.documentElement.innerText).indexOf(inputVal) > -1) {
-            alert("Found the string!");
-        } else {
-            alert("No string");
-        }
+<script src="https://dev.blog.puriumcorp.com/wp-content/themes/kelta/hilitor.js"></script>
+<script type="text/javascript">
 
-        }
+  window.addEventListener("DOMContentLoaded", function(e) {
+    var myHilitor2 = new Hilitor("playground");
+    myHilitor2.setMatchType("left");
+    document.getElementById("keywords").addEventListener("keyup", function(e) {
+        myHilitor2.apply(this.value);
+        //scroll to the element    
+        var element = document.getElementsByTagName("mark")[0];
+        window.scroll({top: element.offsetTop, behavior: 'smooth'});
+    }, false);
+  }, false);
+
 </script>
 
 
@@ -30,6 +31,3 @@ function faq_search() {
 }
 add_shortcode('faqsearch', 'faq_search');
 ?>
-
-
-
