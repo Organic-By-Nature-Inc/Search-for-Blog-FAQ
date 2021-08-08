@@ -45,26 +45,41 @@ document.getElementById("keywords").addEventListener("keyup", function(e) {
     //Hide unrelated search results
     var questions = document.getElementsByClassName("faq-question");
 
-    //if page doesnt contain mark set display to block
-    for(x = 0; x < questions.length; x++) {
-    if(questions[x].getElementsByTagName('mark').length){
-        questions[x].style.display = "block";
-        // console.log("input exists" + questions[x].getElementsByTagName('mark').length);
-    } else {
-        questions[x].style.display = "none";
-        // console.log("no matched keywords in this section" + questions[x].getElementsByTagName('mark').length)
-    }
-    if (document.getElementsByTagName('mark').length == 0) {
-        questions[x].style.display = "block";
-        // console.log("no input");
-    }
-}
 
-    //scroll to searched keyword (throws error when search field is empty)
-    var element = document.getElementsByTagName("mark")[0];
+    for(x = 0; x < questions.length; x++) {
+        if(questions[x].getElementsByTagName('mark').length){
+            questions[x].style.display = "block";
+            // console.log("input exists");
+        } else {
+            questions[x].style.display = "none";
+            // console.log("no matched keywords in this section");
+        }
+        //if page doesnt contain mark set display to block
+        if (document.getElementsByTagName('mark').length == 0) {
+            questions[x].style.display = "block";
+            // console.log("no input");
+        }
+    }
+
+//scroll to searched keyword
+
+if (e.key === 'Enter') {
+    var elements = document.getElementsByTagName("mark");
+    if (count+1 < elements.length) {
+        window.scroll({top: elements[++count].offsetTop, behavior: 'smooth'})
+    } else {
+        count = 0;
+        window.scroll({top: elements[0].offsetTop, behavior: 'smooth'});
+    }
+} else {
+    count = 0;
+  var element = document.getElementsByTagName("mark")[0];
     if(element){
         window.scroll({top: element.offsetTop, behavior: 'smooth'});
-    }
+    } 
+}
+console.log(count + "/" + elements.length);  
+
 
 
 }, false);
