@@ -12,8 +12,11 @@ function faq_search(){
 
 <!-- Search field -->
 <input type="text" id="keywords" placeholder="Search on the page..."></input>
+<span id="counter"></span>
 <style>
 .sticky-faqsearch {position: sticky; top: 30px; box-shadow: 0px 5px 10px #4f4f5d29;}
+#counter {position: absolute; right: 0; margin-top: -32px; margin-right: 10px; color: #9ca9a1;}
+.sticky-counter {position: sticky !important; top: 40px; float: right;}
 </style>
 
 <script src="https://dev.blog.puriumcorp.com/wp-content/plugins/faq-search/hilitor.js"></script>
@@ -45,7 +48,6 @@ document.getElementById("keywords").addEventListener("keyup", function(e) {
     //Hide unrelated search results
     var questions = document.getElementsByClassName("faq-question");
 
-
     for(x = 0; x < questions.length; x++) {
         if(questions[x].getElementsByTagName('mark').length){
             questions[x].style.display = "block";
@@ -61,26 +63,38 @@ document.getElementById("keywords").addEventListener("keyup", function(e) {
         }
     }
 
-//scroll to searched keyword
-
-if (e.key === 'Enter') {
+    //scroll to searched keyword & keyword counter
+    function scrollToKword() {
+        
     var elements = document.getElementsByTagName("mark");
-    if (count+1 < elements.length) {
-        window.scroll({top: elements[++count].offsetTop, behavior: 'smooth'})
+    var element = document.getElementsByTagName("mark")[0];
+
+    if (e.key === 'Enter') {
+        if (count+1 < elements.length) {
+            window.scroll({top: elements[++count].offsetTop, behavior: 'smooth'})
+        } else {
+            count = 0;
+            window.scroll({top: elements[0].offsetTop, behavior: 'smooth'});
+        }
+        //display keyword count
+        number = count+1 + "/" + elements.length; 
+        document.getElementById('counter').innerHTML = number; 
     } else {
         count = 0;
-        window.scroll({top: elements[0].offsetTop, behavior: 'smooth'});
+        if(element){
+            window.scroll({top: element.offsetTop, behavior: 'smooth'});
+            document.getElementById('counter').style.display = "block";
+        } else {
+            document.getElementById('counter').style.display = "none";
+        }
+        //display keyword count
+        number = count+1 + "/" + elements.length; 
+        document.getElementById('counter').innerHTML = number; 
     }
-} else {
-    count = 0;
-  var element = document.getElementsByTagName("mark")[0];
-    if(element){
-        window.scroll({top: element.offsetTop, behavior: 'smooth'});
-    } 
-}
-console.log(count + "/" + elements.length);  
+    // console.log(count+1 + "/" + elements.length);  
+    }
 
-
+    scrollToKword();
 
 }, false);
 }, false);
@@ -97,8 +111,10 @@ var sticky = faqsearch.offsetTop;
 function seatchStickToTop() {
 if (window.pageYOffset > sticky) {
     faqsearch.classList.add("sticky-faqsearch");
+    document.getElementById("counter").classList.add("sticky-counter");
 } else {
     faqsearch.classList.remove("sticky-faqsearch");
+    document.getElementById("counter").classList.remove("sticky-counter");
 }
 }
 
